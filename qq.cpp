@@ -7,25 +7,40 @@ using namespace std;
 
 class Group;
 class Discipline;
-
-class Student {
+class Person {
 private:
-    string name;
-    int age;
-    Group* group;
-    vector<Discipline*> disciplines;
-
+     string name;
+     int age;
 public:
-    Student() : name(""), age(0), group(nullptr) {}
-    Student(string n, int a) : name(n), age(a), group(nullptr) {}
+    Person() : name(""), age(0) {}
+    Person(string n, int a) : name(n), age(a) {}
 
     string GetName() { return name; }
     int GetAge() const { return age; }
-    Group* GetGroup() { return group; }
 
     void SetName(string n) { name = n; }
     void SetAge(int a) { age = a; }
     void Set(string n, int a) { name = n; age = a; }
+    virtual void Show() {
+        cout << "========================\n";
+        cout << "Имя: " << name << "\n";
+        cout << "Возраст: " << age << "\n";
+        cout << "========================\n\n";
+    }
+};
+
+class Student: public Person {
+private:
+
+    Group* group;
+    vector<Discipline*> disciplines;
+
+public:
+    Student() : Person(), group(nullptr) {}
+    Student(string n, int a) : Person(n, a), group(nullptr) {}
+
+
+    Group* GetGroup() { return group; }
 
     void SetGroup(Group* g);
     void ShowGroup();
@@ -139,16 +154,7 @@ float Student::GetAverageGrade() {
     return count ? sum / count : 0;
 }
 
-void Student::Show() {
-    cout << "========================\n";
-    cout << "Студент: " << name << "\n";
-    cout << "Возраст: " << age << "\n";
-    ShowGroup();
-    cout << "Средний балл: " << GetAverageGrade() << "\n";
-    ShowDisciplines();
-    ShowGrades();
-    cout << "========================\n\n";
-}
+
 
 void Discipline::ShowGrades() {
     cout << "=== Баллы по дисциплине: " << name << " ===\n";
@@ -213,7 +219,6 @@ int main() {
     student4.AddDiscipline(&oop);
     student4.AddDiscipline(&math);
 
-    // Добавляем оценки
     math.AddGrade(&student1, 4.5);
     math.AddGrade(&student1, 5.0);
     math.AddGrade(&student2, 5.0);
@@ -227,21 +232,17 @@ int main() {
     math.AddGrade(&student4, 4.86);
     math.AddGrade(&student4, 5.0);
 
-    // Выводим информацию о студентах
     student1.Show();
     student2.Show();
     student3.Show();
     student4.Show();
 
-    // Выводим информацию о группах
     group1.ShowStudents();
     group2.ShowStudents();
 
-    // Выводим средние баллы групп отдельно
     group1.ShowGroupAverage();
     group2.ShowGroupAverage();
 
-    // Выводим информацию по дисциплинам
     math.ShowGrades();
     physics.ShowGrades();
     economics.ShowGrades();
